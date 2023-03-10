@@ -366,7 +366,11 @@ snp_sub_vis <- snp_sub_vis %>% pivot_longer(starts_with("V"),
                              names_to='geno',
                              values_to='SNP')
 ### plot
-all_chromosomes_plot <- ggplot (data = snp_sub_vis) + geom_bar(mapping = aes(x = Chromosome, fill = Chromosome)) +xlab(label = "Chromosome") + ylab(label = "SNPs") + ggtitle("Single Nucleotide Polymorphism per Chromosome") + scale_x_discrete(limit=c(1:10))
+ggplot (data = snp_sub_vis) + geom_bar(mapping = aes(x = Chromosome, fill = Chromosome)) +xlab(label = "Chromosome") + ylab(label = "SNPs") + ggtitle("Single Nucleotide Polymorphism per Chromosome") + scale_x_discrete(limit=c(1:10))
+
+ggsave("All Chromosomes Plot")
+
+### Chromosome 1 has the most SNPs, while chromosome 10 appears to have the least. 
 ```
 ### Chromosome 1 seems to have the highest count, while chromosome 10 has the lowest
 
@@ -387,11 +391,16 @@ Subsetted_SNPs <- snp_vis_2 %>%
     ), 
   )
 ### graph 1
-by_sample_plot <- ggplot (data = Subsetted_SNPs) + geom_bar(mapping = aes(x = Chromosome, fill = type)) + 
+ggplot (data = Subsetted_SNPs) + geom_bar(mapping = aes(x = Chromosome, fill = type)) + 
 xlab(label = "Chromosome") + ylab(label = "SNPs") +
   ggtitle("Single Nucleotide Polymorphism per Sample") 
+
+ggsave("Chromosome by Sample.png")
+
 ### graph 2
-by_sample_plot_group <- by_group_plot + facet_grid(Group ~ .)
+by_group_plot + facet_grid(Group ~ .)
+
+ggsave("Chromosome by Group + Sample.png")
 ```
 ### The group with the highest SNPs is the ZMMLR, belonging to Maize. Teosinte has an overall lower SNP count. 
 
@@ -419,20 +428,26 @@ snp_vis_2_snp <- snp_vis_2_snp %>%
   )
 snp_vis_2_snp_na_omit <- na.omit(snp_vis_2_snp) 
 ### plot het vs. hom in each group
-homo_vs_hetero_group_sample <- ggplot(data = snp_vis_2_snp_na_omit) + 
+ggplot(data = snp_vis_2_snp_na_omit) + 
   geom_bar(mapping = aes(x = homozygosity, fill = Group)) + 
   xlab(label = "Homozygous vs. Heterozygous") + ylab(label = "Count") +
   ggtitle("Homozygous vs. Heterozygous by Group & Sample") + facet_grid(type ~ .) 
 
-homo_vs_hetero_group <- ggplot(data = snp_vis_2_snp_na_omit) + 
+ggsave("hom vs. het groups _ sample.png")
+
+ggplot(data = snp_vis_2_snp_na_omit) + 
   geom_bar(mapping = aes(x = Group, fill = homozygosity)) + 
   xlab(label = "Homozygous vs. Heterozygous") + ylab(label = "Count") +
   ggtitle("Homozygous vs. Heterozygous by Group") 
 
-homo_vs_hetero_sample <- ggplot(data = snp_vis_2_snp_na_omit) + 
+ggsave("hom vs. het groups.png")
+
+ggplot(data = snp_vis_2_snp_na_omit) + 
   geom_bar(mapping = aes(x = type, fill = homozygosity)) + 
   xlab(label = "Homozygous vs. Heterozygous") + ylab(label = "Count") +
-  ggtitle("Homozygous vs. Heterozygous in Maize + Teosinte") 
+  ggtitle("Homozygous vs. Heterozygous in Maize + Teosinte")
+
+ggsave("hom vs. het samples.png")
 ```
 ### There is a close amount of heterozygosity in both samples, but we need to keep in mind that the Teosinte sample has a lower number of SNPs overall, and therefore, in my opinion, a conclusion cannot be drawn from this data. 
 
@@ -451,11 +466,14 @@ missing_data_plot <- ggplot(data = r_is_hard) +
   geom_bar(mapping = aes(x = missing_data, fill = Group)) + 
   xlab(label = "Missing or Not") + ylab(label = "Count") +
   ggtitle("Missing Data in Maize + Teosinte") + facet_grid(type ~ .) 
+ggsave("Missing Data Sample & Group.png")
 
 missing_data_plot2 <- ggplot(data = r_is_hard) +
   geom_bar(mapping = aes(x = type, fill = missing_data)) + 
   xlab(label = "Sample") + ylab(label = "Count") +
   ggtitle("Missing Data in Maize + Teosinte")
+
+ggsave("Missing Data by Sample.png")
 ```
 
 ## Creative portion of assignment (additional graph):
@@ -474,7 +492,10 @@ Subsetted_SNPs_new <- snp_vis_2_new %>%
     ), 
   )
 
-Amplicons_Sample <- ggplot(Subsetted_SNPs_new) + geom_col(aes(x = type, y = count_amplicons)) + xlab(label = "Sample") + ylab(label = "Number of Amplicons") + ggtitle("Amplicons per Sample")
+ggplot(Subsetted_SNPs_new) + geom_col(aes(x = type, y = count_amplicons)) + xlab(label = "Sample") + ylab(label = "Number of Amplicons") + ggtitle("Amplicons per Sample")
+
+ggsave("Amplicons_Sample.png")
+
 ### This difference in number of amplicons suggests that something went wrong during PCR, or a different step in the procedure with the Teosinte sample. 
 ```
 
