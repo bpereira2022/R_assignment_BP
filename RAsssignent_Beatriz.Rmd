@@ -57,11 +57,6 @@ sapply(fang, class)
 ```
 
 ```{r}
-View(fang)
-### View can also give you an idea of the structure of the data. Here, we can see headers, and the data included in each vertor. 
-```
-
-```{r}
 table(fang$Group)
 ### We will be filtering out desired Groups, so it's good to know how many of each there are, so we can look back and verify we haven't lost data. 
 ```
@@ -92,20 +87,13 @@ sapply(snp, class)
 ### unlike gang, snp has a mixture of characters and integers. 
 ```
 
-```{r}
-View (snp)
-### Again, this allows us to further familiarize ourselves with the data.
-```
-
 # --- Part 1b,Data Processing ---
 ## pull out your desired groups for Maize and Teosinte.
 ```{r}
 Subsetted_Maize <- filter(fang, Group %in% c("ZMMIL","ZMMLR","ZMMMR"))
-View(Subsetted_Maize)
 ```
 ```{r}
 Subsetted_Teosinte <- filter(fang, Group %in% c("ZMPBA","ZMPIL","ZMPJA"))
-View(Subsetted_Teosinte)
 ```
 
 ## Checking that you have the right data: 
@@ -118,21 +106,17 @@ table(Subsetted_Teosinte$Group)
 ## Remove columns that we do not need, including "JG_OTU" and "Group": 
 ```{r}
 Subsetted_Maize <- Subsetted_Maize[,!names(Subsetted_Maize) %in% c("JG_OTU", "Group")]
-View(Subsetted_Maize)
 ```
 ```{r}
 Subsetted_Teosinte <- Subsetted_Teosinte[,!names(Subsetted_Teosinte) %in% c("JG_OTU", "Group")]
-View(Subsetted_Teosinte)
 ```
 
 ## Change Sample_ID to SNP_ID (first column)
 ```{r}
 colnames(Subsetted_Maize) [1] <- "SNP_ID"
-View(Subsetted_Maize)
 ```
 ```{r}
 colnames(Subsetted_Teosinte) [1] <- "SNP_ID"
-View(Subsetted_Teosinte)
 ```
 
 ## Transpose the genotype data so that the columns become rows
@@ -149,7 +133,6 @@ Subsetted_Teosinte <- t(Subsetted_Teosinte)
 ```{r}
 snp_ready <- snp[ , c("SNP_ID", "Chromosome","Position")]       
 snp_ready <- tibble::as_tibble(snp_ready)
-View(snp_ready)
 ```
 
 ## Now, to join the snp_ready file with the modified + transposed genotype files:
@@ -404,10 +387,10 @@ Subsetted_SNPs <- snp_vis_2 %>%
     ), 
   )
 ### graph 1
-ggplot (data = Subsetted_SNPs) + geom_bar(mapping = aes(x = Chromosome, fill = type)) + 
+by_group_plot <- ggplot (data = Subsetted_SNPs) + geom_bar(mapping = aes(x = Chromosome, fill = type)) + 
 xlab(label = "Chromosome") + ylab(label = "SNPs") +
   ggtitle("Single Nucleotide Polymorphism per Sample") 
-
+by_group_plot
 ggsave("Chromosome by Sample.png")
 
 ### graph 2
@@ -477,13 +460,13 @@ r_is_hard <- snp_vis_2_snp %>%
     ), 
   )
 
-missing_data_plot <- ggplot(data = r_is_hard) + 
+ggplot(data = r_is_hard) + 
   geom_bar(mapping = aes(x = missing_data, fill = Group)) + 
   xlab(label = "Missing or Not") + ylab(label = "Count") +
   ggtitle("Missing Data in Maize + Teosinte") + facet_grid(type ~ .) 
 ggsave("Missing Data Sample & Group.png")
 
-missing_data_plot2 <- ggplot(data = r_is_hard) +
+ggplot(data = r_is_hard) +
   geom_bar(mapping = aes(x = type, fill = missing_data)) + 
   xlab(label = "Sample") + ylab(label = "Count") +
   ggtitle("Missing Data in Maize + Teosinte")
