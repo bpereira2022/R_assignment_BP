@@ -33,57 +33,69 @@ snp <- read_tsv("https://github.com/EEOB-BioData/BCB546_Spring2023/raw/main/assi
 ## gang
 ```{r}
 typeof(fang)
-```
 ### fang is a "list", which is multiple, heterogeneous, vectors with 1 element each. 
+```
+ 
 ```{r}
 length(fang)
-```
 ### There are 986 elements
+```
+
 ```{r}
 dim(fang)
-```
 ### there are 2,782 rows, and 986 columns 
+```
+
 ```{r}
 str(fang)
-```
 ### this is a "data.frame", with 2,782 observations and 986 variables. Variable titles are as follows: Sample_ID, JG_OTU, Group, and the listed genotypes. 
+```
+
 ```{r}
 sapply(fang, class)
-```
 ### every column has class: "character" 
+```
+
 ```{r}
 View(fang)
-```
 ### View can also give you an idea of the structure of the data. Here, we can see headers, and the data included in each vertor. 
+```
+
 ```{r}
 table(fang$Group)
-```
 ### We will be filtering out desired Groups, so it's good to know how many of each there are, so we can look back and verify we haven't lost data. 
+```
+
 ## snp
 ```{r}
 typeof(snp)
+### snp is a "list", which is multiple, heterogeneous, vectors with 1 element each.
 ```
-### snp is a "list", which is multiple, heterogeneous, vectors with 1 element each. 
+
 ```{r}
 length(snp)
-```
 ### there are 15 elements.
+```
+
 ```{r}
 dim(snp)
-```
 ### there are 983 rows, and 15 columns.
+```
+
 ```{r}
 str(snp)
+### The variables in this file include details about the SNP_ID itself - beggining with SNP_ID, and ending with count_gene.
 ```
-### The variables in this file include details about the SNP_ID itself - beggining with SNP_ID, and ending with count_gene. 
+
 ```{r}
 sapply(snp, class)
-```
 ### unlike gang, snp has a mixture of characters and integers. 
+```
+
 ```{r}
 View (snp)
-```
 ### Again, this allows us to further familiarize ourselves with the data.
+```
 
 # --- Part 1b,Data Processing ---
 ## pull out your desired groups for Maize and Teosinte.
@@ -100,8 +112,8 @@ View(Subsetted_Teosinte)
 ```{r}
 table(Subsetted_Maize$Group)
 table(Subsetted_Teosinte$Group)
-```
 ### Results match what is in our original file (fang). 
+```
 
 ## Remove columns that we do not need, including "JG_OTU" and "Group": 
 ```{r}
@@ -129,8 +141,9 @@ Subsetted_Maize <- t(Subsetted_Maize)
 ```
 ```{r}
 Subsetted_Teosinte <- t(Subsetted_Teosinte)
+### This should be clearly visible if you take a look at the file.
 ```
-### This should be clearly visible if you take a look at the file. 
+ 
 
 ## Before joining, we only want the first 3 columns of the snp file. Additionally, the snp file should become a tibble for further processing:
 ```{r}
@@ -201,8 +214,9 @@ write.table(Chromosome7, file = "Chromosome7_mai.txt")
 write.table(Chromosome8, file = "Chromosome8_mai.txt")
 write.table(Chromosome9, file = "Chromosome9_mai.txt")
 write.table(Chromosome10, file = "Chromosome10_mai.txt")
-```
+
 ### You can move files into folders in the "Files" tab (bottom right), by selecting all the desired files, hitting the "settings" (the actual blue logo) down arrow, and selecting "move...". 
+```
 
 ## 10 files, ordered by decreasing Position, with missing data encoded with "-":
 ```{r}
@@ -372,7 +386,6 @@ ggsave("All Chromosomes Plot")
 
 ### Chromosome 1 has the most SNPs, while chromosome 10 appears to have the least. 
 ```
-### Chromosome 1 seems to have the highest count, while chromosome 10 has the lowest
 
 ## Distribution of SNPs on each chromosome & across (Maize vs. Teosinte)
 ```{r}
@@ -401,8 +414,9 @@ ggsave("Chromosome by Sample.png")
 by_group_plot + facet_grid(Group ~ .)
 
 ggsave("Chromosome by Group + Sample.png")
-```
+
 ### The group with the highest SNPs is the ZMMLR, belonging to Maize. Teosinte has an overall lower SNP count. 
+```
 
 ## homozygous vs. heterozygous:
 ```{r}
@@ -448,8 +462,9 @@ ggplot(data = snp_vis_2_snp_na_omit) +
   ggtitle("Homozygous vs. Heterozygous in Maize + Teosinte")
 
 ggsave("hom vs. het samples.png")
-```
+
 ### There is a close amount of heterozygosity in both samples, but we need to keep in mind that the Teosinte sample has a lower number of SNPs overall, and therefore, in my opinion, a conclusion cannot be drawn from this data. 
+```
 
 ## NA data: 
 ```{r}
@@ -474,6 +489,8 @@ missing_data_plot2 <- ggplot(data = r_is_hard) +
   ggtitle("Missing Data in Maize + Teosinte")
 
 ggsave("Missing Data by Sample.png")
+
+### Lots missing from Teosinte
 ```
 
 ## Creative portion of assignment (additional graph):
