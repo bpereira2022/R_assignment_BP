@@ -1,0 +1,27 @@
+---
+title: "Noroozi_Review"
+author: "Kimia Noroozi"
+date: "2023-03-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data Inspection looks good; I suggest assigning an output for the codes so they don't occupy so much space when you run the markdown. 
+
+## Data processing can be completed in a loop so it takes up less memory. Feel free to use the loop from my markdown!
+
+## Data visualization
+### I think the codes themselves look great. This might be from my lack of experience with genotype data, but I'm not sure what "snp_sub_vis" is... I feel like it can be used to calculate the length of SNPs? if so, I think the "nrow" command might work? Otherwise, I don't think the snp counts is unique and has re-counted the same thing (?!) I'm not sure. Also, in both graphs from the first question, I'm not sure what the numbers represent, they're have a hugher altidude than the files contain... I was struggling with this part a bit. 
+
+## For the homozygosity/heterozygosity part, the graph I had represented the number of SNPs that had a certain percentage of (hetero/homo)zygosity, which might be better if it's represented in either a distribution plot or I can average and compare the ratios throught. 
+
+
+## Generally, I would suggest using less intensive codes, because running this one occupied 2.26GiB (almost 64%) of my computer's memory. considering that this is probably a trimmed file compared to actual genotype data, it can be really straneous to run the file and/or there might not be enough memory on regular computers to run the codes!
+
+```{r cars}
+summary(cars)
+```
+
