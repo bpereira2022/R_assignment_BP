@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Comments_Imaobong"
 author: "Beatriz Pereira"
 date: "2023-03-08"
 output: html_document
@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+## (I did installed these packages before loading them, and they all ran well)
 # Load necessary libraries
 ```{r}
 library(dplyr)
@@ -24,11 +24,11 @@ library(ggplot2)
 fang <- read_tsv("https://github.com/EEOB-BioData/BCB546_Spring2023/raw/main/assignments/UNIX_Assignment/fang_et_al_genotypes.txt")
 ```
 
-## snp_position
+## snp_position   
 ```{r}
 snp <- read_tsv("https://github.com/EEOB-BioData/BCB546_Spring2023/raw/main/assignments/UNIX_Assignment/snp_position.txt")
 ```
-
+## comments for data inspection---(I ran all the script for fang data inspection and they look good. Other suggestions include: object.size(snp), names(snp), $ unique(fang$Chromosome) to know the file size, name of each column and unique chromosome in file)
 # --- Part 1a, Data inspection ---
 ## gang
 ```{r}
@@ -60,7 +60,7 @@ sapply(fang, class)
 table(fang$Group)
 ### We will be filtering out desired Groups, so it's good to know how many of each there are, so we can look back and verify we haven't lost data. 
 ```
-
+## (Same comment as the fang data)
 ## snp
 ```{r}
 typeof(snp)
@@ -87,6 +87,7 @@ sapply(snp, class)
 ### unlike gang, snp has a mixture of characters and integers. 
 ```
 
+## comments for Data processing-- (A little bit confusing as your newly created files are having the same file name as old files.It will be nice if you have a different name to new files, but all did run well)
 # --- Part 1b,Data Processing ---
 ## pull out your desired groups for Maize and Teosinte.
 ```{r}
@@ -149,6 +150,15 @@ snp_maize <- tibble::as_tibble(snp_maize)
 snp_teosinte <- tibble::as_tibble(snp_teosinte)
 ```
 
+##Comments on chromosome order----Maybe you could make fewer codes instead of the long codes you have. Like eg of mine below.
+You could first create a folder where all the files would be saved using this code "dir.create('./decreased_maize_file')". 
+then this codes for decreasing position----  "demis_maize <- as_tibble(lapply(merged_maize, gsub, pattern = "?", replacement = "-", fixed = TRUE))
+demaize_chromo <- filter(demis_maize, Chromosome != "unknown" & Chromosome != "multiple") 
+for (i in 1:length(unique(demaize_chromo$Chromosome))) {
+de_maizechro <- demaize_chromo %>% filter(Chromosome == i) %>% arrange(desc(Position)) 
+ write.table(de_maizechro, file =
+paste("./decreased_maize/decreasing_maize",i), quote = F, sep = "\t")
+}"
 # Maize 20 files - Processing: 
 ## 10 files, ordered by increasing Position, with missing data encoded with "?":
 ```{r}
@@ -348,7 +358,7 @@ write.table(Chromosome8, file = "Chromosome8_decrease_teo")
 write.table(Chromosome9, file = "Chromosome9_decrease_teo")
 write.table(Chromosome10, file = "Chromosome10_decrease_teo")
 ```
-
+## comment on data visulaization----(Chromosome legend on the right side of your graph is not in the right order.. you could try this "as.factor(as.double(Chromosome)" to have them ordered correctly)
 # --- Part 2: Visualization ---
 ## Distribution of SNPs on each chromosome & across (Maize and Teosinte combined): 
 ```{r}
@@ -482,4 +492,4 @@ ggplot(Subsetted_SNPs_new) + geom_col(aes(x = type, y = count_amplicons)) + xlab
 
 ### This difference in number of amplicons suggests that something went wrong during PCR, or a different step in the procedure with the Teosinte sample. 
 ```
-
+Great job... I wish you the best!
